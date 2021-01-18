@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- carousel -->
+<mapper namespace="com.sskjdata.wms.mapper.CarouselMapper">
+    <!-- 字段映射 -->
+    <resultMap id="carouselMap" type="com.sskjdata.wms.entity.CarouselEntity">
+        <id column="carousel_id" property="carouselId" jdbcType="INTEGER" />
+        <result column="imgPath" property="imgPath" jdbcType="CHAR" />
+        <result column="describes" property="describes" jdbcType="CHAR" />
+    </resultMap>
+
+    <!-- 表所有字段 -->
+    <sql id="allColumns">
+        carousel.carousel_id, carousel.imgPath, carousel.describes
+    </sql>
+
+    <!-- 根据条件参数查询数据列表 -->
+    <select id="findByCondition" resultMap="carouselMap">
+        SELECT
+            <include refid="allColumns" />
+        FROM carousel carousel WHERE 1 = 1
+        <if test="imgPath != null and imgPath != ''">
+            AND carousel.imgPath LIKE CONCAT('%', #{imgPath}, '%')
+        </if>
+        <if test="describes != null and describes != ''">
+            AND carousel.describes LIKE CONCAT('%', #{describes}, '%')
+        </if>
+    </select>
+
+    <!-- 根据主键批量删除数据 -->
+    <delete id="deleteByIds" parameterType="list">
+        DELETE FROM carousel WHERE carousel_id IN
+        <foreach collection="list" index="index" item="carouselId" open="(" separator="," close=")">
+            #{carouselId}
+        </foreach>
+    </delete>
+</mapper>

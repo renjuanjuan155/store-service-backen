@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+<!--设置log4j2的自身log级别为warn -->
+<!-- Configuration后面的status，这个用于设置log4j2自身内部的信息输出，可以不设置，当设置成trace时，你会看到log4j2内部各种详细输出。
+	ALL< Trace < DEBUG < INFO < WARN < ERROR  < FATAL < OFF-->
+<!-- monitorInterval：Log4j能够自动检测修改配置 文件和重新配置本身，设置间隔秒数。，单位是s,最小是5s.-->
+<configuration status="WARN" monitorInterval="30" >
+	<properties>
+		<!-- 配置日志文件输出目录 ${sys:user.home} -->
+        <!--共有8个级别，按照从低到高为：All < Trace < Debug < Info < Warn < Error < Fatal < OFF.
+            All:最低等级的，用于打开所有日志记录.
+            Trace:是追踪，就是程序推进以下，你就可以写个trace输出，所以trace应该会特别多，不过没关系，我们可以设置最低日志级别不让他输出.
+            Debug:指出细粒度信息事件对调试应用程序是非常有帮助的.
+            Info:消息在粗粒度级别上突出强调应用程序的运行过程.
+            Warn:输出警告及warn以下级别的日志.
+            Error:输出错误信息日志.
+            Fatal:输出每个严重的错误事件将会导致应用程序的退出的日志.
+            OFF:最高等级的，用于关闭所有日志记录-->
+        <Property name="log_path">logs</Property>
+        <Property name="log_path_info">${log_path}/INFO</Property>
+        <Property name="log_path_error">${log_path}/ERROR</Property>
+        <Property name="log_path_debug">${log_path}/DEBUG</Property>
+        <Property name="log_pattern_systemout">[%-d{HH:mm:ss:SSS}] [%5p ][%t][%C-%M:%L] -Msg:>>> %m%n</Property>
+        <Property name="log_pattern_file">[%-d{yyyy-MM-dd HH:mm:ss:SSS}] [%5p ][%35t ] [ %l ] -Msg:>>> %m%n</Property>
+    </properties>
+	<!--先定义所有的appender -->
+	<appenders>
+		<!-- 输出日志的格式 -->
+            <!--
+                %d{yyyy-MM-dd HH:mm:ss, SSS} : 日志生产时间
+                %p : 日志输出格式
+                %c : logger的名称
+                %m : 日志内容，即 logger.info("message")
+                %n : 换行符
+                %C : Java类名
+                %L : 日志输出所在行数
+                %M : 日志输出所在方法名
+                hostName : 本地机器名
+                hostAddress : 本地ip地址 -->
+		<!--输出到控制台 -->
+		<console name="stdout" target="SYSTEM_OUT">
+			<!-- 控制台只输出level及以上级别的信息(onMatch),其他的直接拒绝(onMismatch) -->
+            <ThresholdFilter level="trace" onMatch="ACCEPT" onMismatch="DENY"/>
+			<PatternLayout pattern="${log_pattern_systemout}" />
+		</console>
+
+		<!--输出到文件（info） 每次大小超过size，则这size大小的日志会自动存入按年份-月份建立的文件夹下面并进行压缩，作为存档 -->
+		<RollingFile name="logInfo" fileName="${log_path_info}/info.log" filePattern="${log_path_info}/$${date:yyyy-MM}/info-%d{yyyy-MM-dd}-%i.log">
+			<PatternLayout pattern="${log_pattern_file}" />
+			<Filters>
+				 <!--设置只输出级别为info的日志-->
+				<ThresholdFilter level="INFO" />
+				<ThresholdFilter level="WARN" onMatch="DENY" onMismatch="NEUTRAL" />
+			</Filters>
+			<Policies>
+				<!-- 归档每天的文件 -->
+				<TimeBasedTriggeringPolicy />
+				<!-- 限制单个文件大小 -->
+				<SizeBasedTriggeringPolicy size="10 MB" />
+			</Policies>
+			<!-- 限制每天文件个数 -->
+			<DefaultRolloverStrategy compressionLevel="0" max="30" >
+				<Delete basePath="${log_path_info}" maxDepth="2">
+                    <IfFileName glob="*/info-*.log">
+                        <IfLastModified age="3d"/>
+                    </IfFileName>
+                </Delete>
+			</DefaultRolloverStrategy>
+		</RollingFile>
+
+
+		<RollingFile name="logError" fileName="${log_path_error}/error.log" filePattern="${log_path_error}/$${date:yyyy-MM}/error-%d{yyyy-MM-dd}-%i.log">
+			<PatternLayout pattern="${log_pattern_file}" />
+			<Filters>
+				<ThresholdFilter level="ERROR" />
+			</Filters>
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+				<SizeBasedTriggeringPolicy size="10 MB" />
+			</Policies>
+			<!-- 限制每天文件个数 -->
+			<DefaultRolloverStrategy compressionLevel="0" max="30" >
+				<Delete basePath="${log_path_error}" maxDepth="2">
+                    <IfFileName glob="*/error-*.log">
+                        <IfLastModified age="3d"/>
+                    </IfFileName>
+                </Delete>
+			</DefaultRolloverStrategy>
+		</RollingFile>
+		
+		<RollingFile name="logDebug" fileName="${log_path_debug}/debug.log" filePattern="${log_path_debug}/$${date:yyyy-MM}/debug-%d{yyyy-MM-dd}-%i.log">
+			<PatternLayout pattern="${log_pattern_file}" />
+			<Filters>
+				<ThresholdFilter level="DEBUG" />
+			</Filters>
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+				<SizeBasedTriggeringPolicy size="10 MB" />
+			</Policies>
+			<!-- 限制每天文件个数 -->
+			<DefaultRolloverStrategy compressionLevel="0" max="30" >
+				<Delete basePath="${log_path_debug}" maxDepth="2">
+                    <IfFileName glob="*/debug-*.log">
+                        <IfLastModified age="3d"/>
+                    </IfFileName>
+                </Delete>
+			</DefaultRolloverStrategy>
+		</RollingFile>
+		
+        
+	</appenders>
+	
+	<!--定义logger，只有定义了logger并引入的appender，appender才会生效-->
+	<loggers>
+		<!--采用异步输出日志-->
+        <AsyncLogger name="com.sskjdata.wms" level="info" includeLocation="true">
+            <!--写入info级别-->
+            <AppenderRef ref="logInfo"/>
+            <!--写入error级别-->
+            <AppenderRef ref="logError" level="error"/>
+            <!--写入error级别-->
+            <AppenderRef ref="logDebug" level="debug"/>
+            
+        </AsyncLogger>
+        
+		<!-- 级别顺序（低到高）：TRACE < DEBUG < INFO < WARN < ERROR < FATAL < ALL-->
+		<asyncRoot  level="info" includeLocation="true">
+			<appender-ref ref="stdout" />
+		</asyncRoot>
+		
+	</loggers>
+</configuration>

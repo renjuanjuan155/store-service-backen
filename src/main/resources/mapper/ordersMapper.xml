@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- orders -->
+<mapper namespace="com.sskjdata.wms.mapper.OrdersMapper">
+    <!-- 字段映射 -->
+    <resultMap id="ordersMap" type="com.sskjdata.wms.entity.OrdersEntity">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="order_id" property="orderId" jdbcType="BIGINT" />
+        <result column="user_id" property="userId" jdbcType="INTEGER" />
+        <result column="product_id" property="productId" jdbcType="INTEGER" />
+        <result column="product_num" property="productNum" jdbcType="INTEGER" />
+        <result column="product_price" property="productPrice" jdbcType="DOUBLE" />
+        <result column="order_time" property="orderTime" jdbcType="BIGINT" />
+    </resultMap>
+
+    <!-- 表所有字段 -->
+    <sql id="allColumns">
+        orders.id, orders.order_id, orders.user_id, orders.product_id, orders.product_num, orders.product_price, orders.order_time
+    </sql>
+
+    <!-- 根据条件参数查询数据列表 -->
+    <select id="findByCondition" resultMap="ordersMap">
+        SELECT
+            <include refid="allColumns" />
+        FROM orders orders WHERE 1 = 1
+        <if test="orderId != null">
+            AND orders.order_id = #{orderId}
+        </if>
+        <if test="userId != null">
+            AND orders.user_id = #{userId}
+        </if>
+        <if test="productId != null">
+            AND orders.product_id = #{productId}
+        </if>
+    </select>
+
+    <!-- 根据主键批量删除数据 -->
+    <delete id="deleteByIds" parameterType="list">
+        DELETE FROM orders WHERE id IN
+        <foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

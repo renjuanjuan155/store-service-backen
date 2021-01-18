@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- category -->
+<mapper namespace="com.sskjdata.wms.mapper.CategoryMapper">
+    <!-- 字段映射 -->
+    <resultMap id="categoryMap" type="com.sskjdata.wms.entity.CategoryEntity">
+        <id column="category_id" property="categoryId" jdbcType="INTEGER" />
+        <result column="category_name" property="categoryName" jdbcType="CHAR" />
+    </resultMap>
+
+    <!-- 表所有字段 -->
+    <sql id="allColumns">
+        category.category_id, category.category_name
+    </sql>
+
+    <insert id="insert" parameterType="com.sskjdata.wms.entity.CategoryEntity">
+        insert into category
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="categoryId != null">
+                category_id,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="lastUpdate != null">
+                last_update,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="categoryId != null">
+                #{categoryId,jdbcType=TINYINT},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="lastUpdate != null">
+                #{lastUpdate,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <!-- 根据条件参数查询数据列表 -->
+    <select id="findByCondition" resultMap="categoryMap">
+        SELECT
+            <include refid="allColumns" />
+        FROM category category WHERE 1 = 1
+        <if test="categoryName != null and categoryName != ''">
+            AND category.category_name LIKE CONCAT('%', #{categoryName}, '%')
+        </if>
+    </select>
+
+    <!-- 根据主键批量删除数据 -->
+    <delete id="deleteByIds" parameterType="list">
+        DELETE FROM category WHERE category_id IN
+        <foreach collection="list" index="index" item="categoryId" open="(" separator="," close=")">
+            #{categoryId}
+        </foreach>
+    </delete>
+
+    <select id="getCategory" resultType="java.util.Map">
+        SELECT  * from category
+    </select>
+    
+    <select id="getCategoryById"  resultType="hashmap">
+        SELECT * from category where category_name = #{categoryName}
+    </select>
+</mapper>

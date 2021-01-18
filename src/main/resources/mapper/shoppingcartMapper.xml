@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- shoppingcart -->
+<mapper namespace="com.sskjdata.wms.mapper.ShoppingcartMapper">
+    <!-- 字段映射 -->
+    <resultMap id="shoppingcartMap" type="com.sskjdata.wms.entity.ShoppingcartEntity">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="user_id" property="userId" jdbcType="INTEGER" />
+        <result column="product_id" property="productId" jdbcType="INTEGER" />
+        <result column="num" property="num" jdbcType="INTEGER" />
+    </resultMap>
+
+    <!-- 表所有字段 -->
+    <sql id="allColumns">
+        shoppingcart.id, shoppingcart.user_id, shoppingcart.product_id, shoppingcart.num
+    </sql>
+
+    <!-- 根据条件参数查询数据列表 -->
+    <select id="findByCondition" resultMap="shoppingcartMap">
+        SELECT
+            <include refid="allColumns" />
+        FROM shoppingcart shoppingcart WHERE 1 = 1
+        <if test="userId != null">
+            AND shoppingcart.user_id = #{userId}
+        </if>
+        <if test="productId != null">
+            AND shoppingcart.product_id = #{productId}
+        </if>
+        <if test="num != null">
+            AND shoppingcart.num = #{num}
+        </if>
+    </select>
+
+    <!-- 根据主键批量删除数据 -->
+    <delete id="deleteByIds" parameterType="list">
+        DELETE FROM shoppingcart WHERE id IN
+        <foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

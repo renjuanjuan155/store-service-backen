@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- product_picture -->
+<mapper namespace="com.sskjdata.wms.mapper.ProductPictureMapper">
+    <!-- 字段映射 -->
+    <resultMap id="productPictureMap" type="com.sskjdata.wms.entity.ProductPictureEntity">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="product_id" property="productId" jdbcType="INTEGER" />
+        <result column="product_picture" property="productPicture" jdbcType="CHAR" />
+        <result column="intro" property="intro" jdbcType="CHAR" />
+    </resultMap>
+
+    <!-- 表所有字段 -->
+    <sql id="allColumns">
+        productPicture.id, productPicture.product_id, productPicture.product_picture, productPicture.intro
+    </sql>
+
+    <!-- 根据条件参数查询数据列表 -->
+    <select id="findByCondition" resultMap="productPictureMap">
+        SELECT
+            <include refid="allColumns" />
+        FROM product_picture productPicture WHERE 1 = 1
+        <if test="productId != null">
+            AND productPicture.product_id = #{productId}
+        </if>
+        <if test="productPicture != null and productPicture != ''">
+            AND productPicture.product_picture LIKE CONCAT('%', #{productPicture}, '%')
+        </if>
+        <if test="intro != null and intro != ''">
+            AND productPicture.intro LIKE CONCAT('%', #{intro}, '%')
+        </if>
+    </select>
+
+    <!-- 根据主键批量删除数据 -->
+    <delete id="deleteByIds" parameterType="list">
+        DELETE FROM product_picture WHERE id IN
+        <foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

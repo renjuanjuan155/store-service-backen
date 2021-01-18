@@ -1,0 +1,122 @@
+app:
+  name: store-service
+  authEnable: false
+  sessionTimeout: 1440
+#------------------------------------------------------------logger 配置-----------------------------------------------------------#
+logging:
+  config: classpath:log4j2-dev.xml
+
+server:
+  servlet:
+    context-path: /${app.name}
+  port: 8089
+  #------------------------------------------------------undertow Server 配置--------------------------------------------------------#
+#  undertow:
+#    io-threads: 8 # 设置IO线程数, 它主要执行非阻塞的任务,它们会负责多个连接, 默认设置每个CPU核心一个线程
+#    worker-threads: 64 # 阻塞任务线程池, 当执行类似servlet请求阻塞操作, undertow会从这个线程池中取得线程,它的值设置取决于系统的负载
+#    buffer-size: 1024 # 每块buffer的空间大小,越小的空间被利用越充分
+#    direct-buffers: true # 是否在Java堆外部分配直接内存缓冲区
+      
+spring:
+  #------------------------------------------------------http 请求信息全局配置-----------------------------------------------------------#
+#  http:
+#    converters:
+#      preferred-json-mapper: fastjson #default jackson Preferred JSON mapper to use for HTTP message conversion. Set to "gson" to force the use of Gson when both it and Jackson are on the classpath.
+#    encoding:
+#      charset: UTF-8
+#      enabled: true
+#      force: true
+  #------------------------------------------------MVC 全局配置；不做配置则全局web请求异常就捕获不了-----------------------------------------------#    
+  mvc:
+    favicon:
+      enabled: true # 导航图标
+    throw-exception-if-no-handler-found: true # 当出现 404 错误时, 直接抛出异常.
+  resources:
+    add-mappings: false # 不要为我们工程中的资源文件建立映射
+    static-locations: classpath:static/,file:static/  # 静态资源
+    
+  #-----------------------------------------------文件上传限制-----------------------------------------------#    
+  servlet:
+    multipart:
+      maxFileSize: 100MB
+      maxRequestSize: 100MB
+   #---------------------------------------------------------------redis配置-------------------------------------------------------------#   
+#  redis:
+#    database: 3                       # Redis数据库索引（默认为0）
+#    timeout: 30000                      # 连接超时时间（毫秒）
+#    password: xxx                 # Redis服务器连接密码（默认为空）
+#    host: xxx
+#    port: 6379
+#    testOnBorrow: false
+#    testWhileIdle: true
+#    ##***************************** lettuce客户端*****************************#
+#    lettuce:
+#      pool:
+#        max-active: 5                # 连接池最大连接数（使用负值表示没有限制）
+#        max-wait: 10                  # 连接池最大阻塞等待时间（使用负值表示没有限制）
+#        max-idle: 8                   # 连接池中的最大空闲连接
+#        min-idle: 3                   # 连接池中的最小空闲连接
+#      shutdown-timeout: 30000
+#  cache:
+#    type: REDIS
+#  data.redis.repositories.enabled: false
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    timeout: 3
+    # password:
+  #---------------------------------------------------------------数据库 配置-------------------------------------------------------------#  
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/store?characterEncoding=utf-8&useSSL=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Hongkong
+    username: root
+    password: 123456
+    druid:
+      initialSize: 2                                   # 连接池中初始化连接数量
+      minIdle: 2                                       # 连接池中最小空闲数量
+      maxActive: 100                                   # 连接池中最大连接数
+      maxWait: 60000                                   # 配置获取连接等待超时的时间
+      timeBetweenEvictionRunsMillis: 60000             # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 
+      minEvictableIdleTimeMillis: 300000               # 配置一个连接在池中最小生存的时间，单位是毫秒 
+      validationQuery: SELECT 'x'                      # 用来检测连接是否有效的sql
+      validationQueryTimeout: 1000                     # 单位：秒，检测连接是否有效的超时时间。底层调用jdbc Statement对象的void setQueryTimeout(int seconds)方法
+      testWhileIdle: true                              # 建议配置为true，不影响性能，并且保证安全性。申请连接的时候检测，如果空闲时间大于timeBetweenEvictionRunsMillis，执行validationQuery检测连接是否有效。
+      testOnBorrow: false                              # 申请连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能。
+      testOnReturn: false                              # 归还连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能。
+      poolPreparedStatements: false                    # 是否缓存preparedStatement，也就是PSCache。PSCache对支持游标的数据库性能提升巨大，比如说oracle。在mysql下建议关闭。
+      maxPoolPreparedStatementPerConnectionSize: -1    # 要启用PSCache，必须配置大于0，当大于0时，poolPreparedStatements自动触发修改为true。在Druid中，不会存在Oracle下PSCache占用内存过多的问题，可以把这个数值配置大一些，比如说100
+      filters: stat,wall,slf4j                         # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙 
+      connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=3000  # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+      useGlobalDataSourceStat: true                     # 合并多个DruidDataSource的监控数据
+
+  #------------------------------------------------Database JPA Config----------------------------------------------#
+#  jpa:
+#    open-in-view: true
+#    database-platform: org.hibernate.dialect.MySQL5Dialect
+#    show-sql: true
+    #hibernate:
+      #naming:
+        #implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+        #physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+
+#application:
+#  #-----------------------------------------------------------*部署客户端配置*--------------------------------------------------------
+#  current:
+#    sysLang: zh_CN                                             # 当前部署应用主语言
+#
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    #log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl 
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #org.apache.ibatis.logging.log4j.Log4jImpl
+    call-setters-on-nulls: true
+  
+#pagehelper分页插件
+pagehelper:
+  helperDialect: mysql
+  reasonable: false
+  supportMethodsArguments: true
+  params: count=countSql
+
+

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- product -->
+<mapper namespace="com.sskjdata.wms.mapper.ProductMapper">
+    <!-- 字段映射 -->
+    <resultMap id="productMap" type="com.sskjdata.wms.entity.ProductEntity">
+        <id column="product_id" property="productId" jdbcType="INTEGER" />
+        <result column="product_name" property="productName" jdbcType="CHAR" />
+        <result column="category_id" property="categoryId" jdbcType="INTEGER" />
+        <result column="product_title" property="productTitle" jdbcType="CHAR" />
+        <result column="product_intro" property="productIntro" jdbcType="CHAR" />
+        <result column="product_picture" property="productPicture" jdbcType="CHAR" />
+        <result column="product_price" property="productPrice" jdbcType="DOUBLE" />
+        <result column="product_selling_price" property="productSellingPrice" jdbcType="DOUBLE" />
+        <result column="product_num" property="productNum" jdbcType="INTEGER" />
+        <result column="product_sales" property="productSales" jdbcType="INTEGER" />
+    </resultMap>
+
+    <!-- 表所有字段 -->
+    <sql id="allColumns">
+        product.product_id, product.product_name, product.category_id, product.product_title, product.product_intro, product.product_picture, product.product_price, product.product_selling_price, 
+        product.product_num, product.product_sales
+    </sql>
+
+    <!-- 根据条件参数查询数据列表 -->
+    <select id="findByCondition" resultMap="productMap">
+        SELECT
+            <include refid="allColumns" />
+        FROM product product WHERE 1 = 1
+        <if test="productName != null and productName != ''">
+            AND product.product_name LIKE CONCAT('%', #{productName}, '%')
+        </if>
+        <if test="categoryId != null">
+            AND product.category_id = #{categoryId}
+        </if>
+        <if test="productTitle != null and productTitle != ''">
+            AND product.product_title LIKE CONCAT('%', #{productTitle}, '%')
+        </if>
+    </select>
+
+    <!-- 根据主键批量删除数据 -->
+    <delete id="deleteByIds" parameterType="list">
+        DELETE FROM product WHERE product_id IN
+        <foreach collection="list" index="index" item="productId" open="(" separator="," close=")">
+            #{productId}
+        </foreach>
+    </delete>
+
+    <select id="getAllProduct" parameterType="com.sskjdata.wms.dto.ProductGetReq" resultType="hashmap" >
+        SELECT * from product
+    </select>
+</mapper>
