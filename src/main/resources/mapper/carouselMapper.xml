@@ -35,4 +35,8 @@
             #{carouselId}
         </foreach>
     </delete>
+    
+    <select id="getCarousel" resultType="hashmap">
+        select * from carousel
+    </select>
 </mapper>

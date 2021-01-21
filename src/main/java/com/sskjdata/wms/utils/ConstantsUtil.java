@@ -24,8 +24,8 @@ public class ConstantsUtil {
 
     //通用的状态码
     public abstract class CommonCode {
-        public static final int SUCCESS_CODE = 0;      //获取数据成功状态码
-        public static final int ERROR_CODE = 1;        //获取数据出错状态码
+        public static final String SUCCESS_CODE = "001";      //获取数据成功状态码
+        public static final String ERROR_CODE = "004";        //获取数据出错状态码
         public static final int POINT_CODE = -2;        //获取数据出错状态码
     }
 

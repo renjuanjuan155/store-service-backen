@@ -1,12 +1,13 @@
 package com.sskjdata.wms.mapper;
 
+import com.sskjdata.wms.dto.ProductByIdReq;
 import com.sskjdata.wms.entity.ProductPicture;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.ResultMap;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
+import java.util.List;
+import java.util.Map;
+
+@Mapper
 public interface ProductPictureMapper {
     @Delete({
         "delete from product_picture",
@@ -23,5 +24,6 @@ public interface ProductPictureMapper {
     int insert(ProductPicture record);
 
 
+    List<Map<String , Object>> getProductImgByProductId(ProductByIdReq req);
 
 }

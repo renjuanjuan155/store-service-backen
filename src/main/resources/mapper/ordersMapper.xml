@@ -42,4 +42,14 @@
             #{id}
         </foreach>
     </delete>
+
+    <select id="getOrdersByUserId" resultType="hashmap">
+        SELECT
+        o.*,
+        p.product_name,
+        p.product_picture
+        FROM orders o
+        LEFT JOIN product p on o.product_id = p.product_id
+        where o.user_id = #{userId}
+    </select>
 </mapper>

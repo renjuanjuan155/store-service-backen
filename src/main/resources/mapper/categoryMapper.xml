@@ -61,7 +61,17 @@
         SELECT  * from category
     </select>
     
-    <select id="getCategoryById"  resultType="hashmap">
-        SELECT * from category where category_name = #{categoryName}
+    <select id="getCategoryByName" parameterType="com.sskjdata.wms.dto.ProductByCategoryName"  resultType="java.lang.Integer">
+        SELECT category_id from category where category_name = #{categoryName}
     </select>
+
+    <select id="getCategoryIdByName"  resultType="java.lang.Integer">
+        SELECT category_id from category where category_name in
+        <foreach collection="arry" index="one" separator="," open="(" close=")" item="one">
+            #{one}
+        </foreach>
+
+    </select>
+
+
 </mapper>

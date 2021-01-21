@@ -39,4 +39,29 @@
             #{id}
         </foreach>
     </delete>
+
+    <delete id="deleteById" parameterType="com.sskjdata.wms.dto.CollectAddReq">
+        DELETE FROM collect WHERE user_id=#{userId} and product_id= #{productId}
+    </delete>
+
+    <select id="getCollectByUserIdAndProduct" parameterType="com.sskjdata.wms.dto.CollectAddReq" resultType="java.lang.Integer">
+        select count(*) from collect where user_id=#{userId} and product_id=#{productId}
+    </select>
+    
+    <select id="getCollectProducrByUserId" parameterType="com.sskjdata.wms.dto.UserByIdReq" resultType="hashmap">
+        SELECT
+        product.category_id,
+        product.product_id,
+        product.product_intro,
+        product.product_name,
+        product.product_num,
+        product.product_picture,
+        product.product_price,
+        product.product_sales,
+        product.product_selling_price,
+        product.product_title
+        from collect
+        LEFT JOIN product on collect.product_id = product.product_id
+        where collect.user_id = #{userId}
+    </select>
 </mapper>

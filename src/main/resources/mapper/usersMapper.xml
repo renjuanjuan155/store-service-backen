@@ -39,4 +39,12 @@
             #{userId}
         </foreach>
     </delete>
+
+    <select id="login" parameterType="com.sskjdata.wms.dto.LoginReq" resultType="java.lang.Integer">
+        select * from users where userName = #{userName} and password = #{password}
+    </select>
+
+    <select id="getUserByUserName" parameterType="com.sskjdata.wms.dto.UserByNameReq" resultType="java.lang.Integer">
+        select COUNT(*) from users where userName = #{userName}
+    </select>
 </mapper>

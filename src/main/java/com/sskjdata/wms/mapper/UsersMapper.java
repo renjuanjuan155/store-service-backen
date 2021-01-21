@@ -1,5 +1,7 @@
 package com.sskjdata.wms.mapper;
 
+import com.sskjdata.wms.dto.LoginReq;
+import com.sskjdata.wms.dto.UserByNameReq;
 import com.sskjdata.wms.entity.UsersEntity;
 import org.apache.ibatis.annotations.*;
 
@@ -29,4 +31,8 @@ public interface UsersMapper {
         "where user_id = #{userId,jdbcType=INTEGER}"
     })
     int updateByPrimaryKey(UsersEntity record);
+
+    int login(LoginReq req);
+
+    int getUserByUserName(UserByNameReq req);
 }

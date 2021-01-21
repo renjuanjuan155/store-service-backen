@@ -1,5 +1,5 @@
 app:
-  name: store-service
+  name:
   authEnable: false
   sessionTimeout: 1440
 #------------------------------------------------------------logger 配置-----------------------------------------------------------#
@@ -29,10 +29,10 @@ spring:
   #------------------------------------------------MVC 全局配置；不做配置则全局web请求异常就捕获不了-----------------------------------------------#    
   mvc:
     favicon:
-      enabled: true # 导航图标
+      enabled:   # 导航图标
     throw-exception-if-no-handler-found: true # 当出现 404 错误时, 直接抛出异常.
   resources:
-    add-mappings: false # 不要为我们工程中的资源文件建立映射
+    add-mappings: true # 不要为我们工程中的资源文件建立映射改为false
     static-locations: classpath:static/,file:static/  # 静态资源
     
   #-----------------------------------------------文件上传限制-----------------------------------------------#    

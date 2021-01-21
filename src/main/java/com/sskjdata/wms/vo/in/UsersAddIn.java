@@ -13,11 +13,11 @@ import lombok.Data;
 @Data
 @ApiModel(description = "新增users入参")
 public class UsersAddIn {
-    @ApiModelProperty(value = "")
+    @ApiModelProperty(value = "用户名称")
     private String userName;
-    @ApiModelProperty(value = "")
+    @ApiModelProperty(value = "用户密码")
     private String password;
-    @ApiModelProperty(value = "")
+    @ApiModelProperty(value = "联系电话")
     private String userPhoneNumber;
 
 }

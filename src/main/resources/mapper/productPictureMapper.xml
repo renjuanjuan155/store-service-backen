@@ -39,4 +39,8 @@
             #{id}
         </foreach>
     </delete>
+
+    <select id="getProductImgByProductId" parameterType="com.sskjdata.wms.dto.ProductByIdReq" resultType="hashmap">
+        select * from product_picture where product_id = #{productID}
+    </select>
 </mapper>

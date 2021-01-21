@@ -16,7 +16,7 @@ public class R extends HashMap<String,Object> {
     private static final long serialVersionUID = 1L;
 
     public R() {
-        put("code", 0);
+        put("code", "001");
     }
 
     /**
@@ -26,10 +26,11 @@ public class R extends HashMap<String,Object> {
      * @param data 响应数据
      * @param msg  相信信息说明
      */
-    private R(int code, Object data, String msg) {
+    private R(String code, Object data, String msg) {
+
+        setProduct(data);
         setCode(code);
         setMsg(msg);
-        setData(data);
     }
 
     /**
@@ -58,7 +59,7 @@ public class R extends HashMap<String,Object> {
      * @param msg  自定义异常信息
      * @return
      */
-    public static R error(int code, String msg) {
+    public static R error(String code, String msg) {
         return newInstance(code, "", msg);
     }
 
@@ -115,7 +116,7 @@ public class R extends HashMap<String,Object> {
      * @param code 请求结果状态码
      * @return
      */
-    public R setCode(int code) {
+    public R setCode(String code) {
         put("code", code);
         return this;
     }
@@ -126,8 +127,8 @@ public class R extends HashMap<String,Object> {
      * @param data 结果数据
      * @return
      */
-    public R setData(Object data) {
-        put("data", data);
+    public R setProduct(Object data) {
+        put("product", data);
         return this;
     }
 
@@ -146,7 +147,7 @@ public class R extends HashMap<String,Object> {
         return this;
     }
 
-    public static R newInstance(int code, Object data, String msg) {
+    public static R newInstance(String code, Object data, String msg) {
         return new R(code, data, msg);
     }
 

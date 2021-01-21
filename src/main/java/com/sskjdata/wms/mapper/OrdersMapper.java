@@ -3,6 +3,10 @@ package com.sskjdata.wms.mapper;
 import com.sskjdata.wms.entity.OrdersEntity;
 import org.apache.ibatis.annotations.*;
 
+import java.util.List;
+import java.util.Map;
+
+@Mapper
 public interface OrdersMapper {
 
     @Insert({
@@ -18,4 +22,5 @@ public interface OrdersMapper {
     int insert(OrdersEntity record);
 
 
+    List<Map<String, Object>> getOrdersByUserId(@Param("userId") int userId);
 }

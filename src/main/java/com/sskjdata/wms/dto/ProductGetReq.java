@@ -13,5 +13,4 @@ import lombok.Data;
 @Data
 @ApiModel(description = "获取所有商品入参")
 public class ProductGetReq extends PageIn {
-
 }

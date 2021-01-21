@@ -50,4 +50,50 @@
     <select id="getAllProduct" parameterType="com.sskjdata.wms.dto.ProductGetReq" resultType="hashmap" >
         SELECT * from product
     </select>
+
+    <select id="getPromoProduct" resultType="hashmap">
+        select * from product where category_id = #{categoryId} order by product_sales desc limit 7
+    </select>
+    
+    <select id="getProductByCategory" parameterType="list" resultType="hashmap">
+        select * from product where category_id IN
+        <foreach collection="list" item="one" open="(" close=")" separator="," index="one">
+            #{one}
+        </foreach>
+        order by product_sales desc
+        limit 0,7
+    </select>
+
+    <select id="getProductByCategoryId" parameterType="com.sskjdata.wms.dto.ProductByCategoryIdReq" resultType="hashmap">
+        select * from product where category_id = #{categoryID}
+        order by product_sales desc
+        limit #{start},#{pageSize}
+    </select>
+
+    <select id="getProductByCategoryIdToTal" parameterType="com.sskjdata.wms.dto.ProductByCategoryIdReq" resultType="integer">
+        select count(*) from product where category_id = #{categoryID}
+
+    </select>
+
+    <select id="getProductByName" parameterType="com.sskjdata.wms.dto.ProductByNameReq" resultType="hashmap">
+        select * from product where product_name like concat('%',#{search},'%')  or product_title like concat('%',#{search},'%') or product_intro like concat('%',#{search},'%')
+        order by product_sales desc
+        limit #{start},#{pageSize}
+    </select>
+
+    <select id="getProductByNameToTal" parameterType="com.sskjdata.wms.dto.ProductByNameReq" resultType="integer">
+        select count(*) from product where product_name like concat('%',#{search},'%')  or product_title like concat('%',#{search},'%') or product_intro like concat('%',#{search},'%')
+    </select>
+
+    <select id="getProductById" parameterType="com.sskjdata.wms.dto.ProductByIdReq" resultType="hashmap">
+       select * from product where product_id = #{productID}
+    </select>
+
+    <select id="getMaxNumByProductId" resultType="integer">
+        SELECT
+        ROUND(p.product_num/2) maxNum
+        from  product  p
+        where p.product_id = #{productId}
+    </select>
+
 </mapper>

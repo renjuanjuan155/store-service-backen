@@ -1,6 +1,8 @@
 package com.sskjdata.wms.service;
 
+import com.sskjdata.wms.dto.ProductByCategoryName;
 import com.sskjdata.wms.mapper.CategoryMapper;
+import com.sskjdata.wms.mapper.ProductMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,11 +20,15 @@ public class CategoryService {
     @Autowired
     private CategoryMapper categoryMapper;
 
+
+
     public List<Map<String,Object>> getCategory(){
         return categoryMapper.getCategory();
     }
 
-    public List<Map<String,Object>> getCategoryById(String categoryname){
-        return categoryMapper.getCategoryById(categoryname);
+    public int getCategoryById(ProductByCategoryName categoryname){
+        return categoryMapper.getCategoryByName(categoryname);
     }
+
+
 }

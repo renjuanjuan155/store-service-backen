@@ -39,4 +39,32 @@
             #{id}
         </foreach>
     </delete>
+
+    <select id="getShoppingByUserId" parameterType="com.sskjdata.wms.dto.UserByIdReq" resultType="hashmap">
+        SELECT
+        s.id,
+        s.product_id productID,
+        p.product_name productName,
+        p.product_picture productImg,
+        p.product_price price,
+        s.num,
+        ROUND(p.product_num/2) maxNum,
+        'false' checks
+        from shoppingcart s
+        LEFT JOIN product  p on s.product_id = p.product_id
+        where s.user_id = #{userId}
+    </select>
+
+    <delete id="deleteByUserIdAndProductId" parameterType="com.sskjdata.wms.dto.ShoppingcartDeleteReq" >
+        delete from shoppingCart where user_id =#{userId} and product_id =#{productId}
+    </delete>
+
+    <select id="getCartByUserIdAndProductId" parameterType="com.sskjdata.wms.entity.ShoppingcartEntity" resultType="hashmap">
+        select * from shoppingCart where user_id = #{userId} and product_id = #{productId}
+    </select>
+
+    <update id="updateShoppingcart" parameterType="com.sskjdata.wms.dto.ShoppingcartUpdateReq">
+        update shoppingCart set num =#{num} where user_id =#{userId} and product_id =#{productId}
+    </update>
+
 </mapper>

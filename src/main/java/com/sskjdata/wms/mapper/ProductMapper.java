@@ -1,6 +1,9 @@
 package com.sskjdata.wms.mapper;
 
 
+import com.sskjdata.wms.dto.ProductByCategoryIdReq;
+import com.sskjdata.wms.dto.ProductByIdReq;
+import com.sskjdata.wms.dto.ProductByNameReq;
 import com.sskjdata.wms.dto.ProductGetReq;
 import com.sskjdata.wms.entity.ProductEntity;
 import org.apache.ibatis.annotations.*;
@@ -31,5 +34,21 @@ public interface ProductMapper {
     int insert(ProductEntity record);
 
     List<Map<String,Object>> getAllProduct(ProductGetReq param);
+
+    List<Map<String,Object>> getPromoProduct(int categoryId);
+
+    List<Map<String,Object>> getProductByCategory(List<Integer> list);
+
+    List<Map<String,Object>> getProductByCategoryId(ProductByCategoryIdReq req);
+
+    int getProductByCategoryIdToTal(ProductByCategoryIdReq req);
+
+    List<Map<String,Object>> getProductByName(ProductByNameReq req);
+
+    int getProductByNameToTal(ProductByNameReq req);
+
+    Map<String,Object> getProductById(ProductByIdReq req);
+
+    int getMaxNumByProductId(@Param("productId") int productId);
 
 }
