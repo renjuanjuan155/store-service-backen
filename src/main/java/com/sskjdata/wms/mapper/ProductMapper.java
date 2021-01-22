@@ -39,9 +39,9 @@ public interface ProductMapper {
 
     List<Map<String,Object>> getProductByCategory(List<Integer> list);
 
-    List<Map<String,Object>> getProductByCategoryId(ProductByCategoryIdReq req);
+    List<Map<String,Object>> getProductByCategoryId(@Param("arry") int[] arry,@Param("start")int start,@Param("pageSize")int pageSize );
 
-    int getProductByCategoryIdToTal(ProductByCategoryIdReq req);
+    int getProductByCategoryIdToTal(@Param("arry") int[] arry );
 
     List<Map<String,Object>> getProductByName(ProductByNameReq req);
 

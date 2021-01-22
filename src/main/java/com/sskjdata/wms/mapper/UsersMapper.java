@@ -5,6 +5,9 @@ import com.sskjdata.wms.dto.UserByNameReq;
 import com.sskjdata.wms.entity.UsersEntity;
 import org.apache.ibatis.annotations.*;
 
+import java.util.List;
+import java.util.Map;
+
 
 @Mapper
 public interface UsersMapper {
@@ -32,7 +35,7 @@ public interface UsersMapper {
     })
     int updateByPrimaryKey(UsersEntity record);
 
-    int login(LoginReq req);
+    List<Map<String,Object>> login(LoginReq req);
 
     int getUserByUserName(UserByNameReq req);
 }

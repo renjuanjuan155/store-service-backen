@@ -17,7 +17,7 @@ import java.util.Map;
  * @Created by meijunjie
  */
 @RestController
-@RequestMapping("/collect")
+@RequestMapping("/user/collect")
 @Api(tags = "收藏商品")
 public class CollectController {
 

@@ -15,5 +15,6 @@ import lombok.Data;
 public class ProductByCategoryIdReq extends PageIn {
 
     @ApiModelProperty(value = "categoryID",required = true)
-    private int categoryID;
+    private int[] categoryID;
+
 }

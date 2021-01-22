@@ -10,6 +10,7 @@ import com.sskjdata.wms.mapper.ShoppingcartMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -28,9 +29,15 @@ public class OrdersService {
     @Autowired
     private ShoppingcartMapper shoppingcartMapper;
 
-    public List<Map<String,Object>> getOrdersByUserId(UserByIdReq req){
+    public List<List<Map<String,Object>>> getOrdersByUserId(UserByIdReq req){
+        List<List<Map<String,Object>>> lists = new ArrayList<>();
         List<Map<String, Object>> ordersByUserId = ordersMapper.getOrdersByUserId(req.getUserId());
-        return ordersByUserId;
+        for (Map<String,Object> map : ordersByUserId){
+            List<Map<String, Object>> mapList = new ArrayList<>();
+            mapList.add(map);
+            lists.add(mapList);
+        }
+        return lists;
     }
 
     public void addOrders(OrdersAddReq req){

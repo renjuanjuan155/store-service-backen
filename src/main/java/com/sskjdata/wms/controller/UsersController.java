@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -43,8 +45,11 @@ public class UsersController {
     /*登录*/
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     public R login(@RequestBody LoginReq req){
-        if (usersService.login(req)){
-            return R.success(req).put("msg","登录成功");
+
+        List<Map<String, Object>> login = usersService.login(req);
+        if (login.size() > 0){
+
+            return R.success(login.get(0)).put("msg","登录成功");
         }
         return R.error("登录失败");
     }

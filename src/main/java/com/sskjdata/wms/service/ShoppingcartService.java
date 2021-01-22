@@ -29,7 +29,11 @@ public class ShoppingcartService {
     private ProductMapper productMapper;
 
     public List<Map<String,Object>> getShoppingByUserId(UserByIdReq req){
-        return shoppingcartMapper.getShoppingByUserId(req);
+        List<Map<String, Object>> shoppingByUserId = shoppingcartMapper.getShoppingByUserId(req);
+        for (Map<String,Object> map:shoppingByUserId){
+            map.put("check",false);
+        }
+        return shoppingByUserId;
     }
 
     public void deleteByUserIdAndProductId(ShoppingcartDeleteReq req){

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -20,7 +21,7 @@ import java.util.Map;
  * @Date 2021/1/20 19:42
  * @Created by meijunjie
  */
-@RequestMapping("user/order")
+@RequestMapping("/user/order")
 @RestController
 @Api(tags = "用户订单")
 public class OrderController {
@@ -31,8 +32,9 @@ public class OrderController {
     /*获取用户的所有订单*/
     @PostMapping(value = "getOrder")
     public R getOrder(@RequestBody UserByIdReq req){
-        List<Map<String, Object>> ordersByUserId = ordersService.getOrdersByUserId(req);
+        List<List<Map<String,Object>>> ordersByUserId = ordersService.getOrdersByUserId(req);
         if (ordersByUserId.size() > 0){
+
             return R.success(ordersByUserId);
         }
         return R.success("该用户没有订单信息").setCode("002");

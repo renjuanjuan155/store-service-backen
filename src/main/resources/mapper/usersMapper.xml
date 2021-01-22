@@ -40,7 +40,7 @@
         </foreach>
     </delete>
 
-    <select id="login" parameterType="com.sskjdata.wms.dto.LoginReq" resultType="java.lang.Integer">
+    <select id="login" parameterType="com.sskjdata.wms.dto.LoginReq" resultType="java.util.Map">
         select * from users where userName = #{userName} and password = #{password}
     </select>
 

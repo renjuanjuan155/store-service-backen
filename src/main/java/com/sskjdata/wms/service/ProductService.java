@@ -50,12 +50,12 @@ public class ProductService {
     }
 
     public List<Map<String,Object>> getProductByCategory(ProductByCategoryIdReq req){
-        List<Map<String, Object>> productByCategoryId = productMapper.getProductByCategoryId(req);
+        List<Map<String, Object>> productByCategoryId = productMapper.getProductByCategoryId(req.getCategoryID(),req.getStart(),req.getPageSize());
         return productByCategoryId;
     }
 
     public int getProductByCategoryTotal(ProductByCategoryIdReq req){
-        int  total = productMapper.getProductByCategoryIdToTal(req);
+        int  total = productMapper.getProductByCategoryIdToTal(req.getCategoryID());
         return total;
     }
 

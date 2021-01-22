@@ -64,14 +64,20 @@
         limit 0,7
     </select>
 
-    <select id="getProductByCategoryId" parameterType="com.sskjdata.wms.dto.ProductByCategoryIdReq" resultType="hashmap">
-        select * from product where category_id = #{categoryID}
+    <select id="getProductByCategoryId" resultType="hashmap">
+        select * from product where category_id in
+        <foreach collection="arry" index="one" separator="," close=")" open="(" item="one">
+            #{one}
+        </foreach>
         order by product_sales desc
         limit #{start},#{pageSize}
     </select>
 
     <select id="getProductByCategoryIdToTal" parameterType="com.sskjdata.wms.dto.ProductByCategoryIdReq" resultType="integer">
-        select count(*) from product where category_id = #{categoryID}
+        select count(*) from product where category_id in
+        <foreach collection="arry" index="one" separator="," close=")" open="(" item="one">
+            #{one}
+        </foreach>
 
     </select>
 

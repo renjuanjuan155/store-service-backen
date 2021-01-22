@@ -19,7 +19,7 @@ import java.util.Map;
  * @Created by meijunjie
  */
 @RestController
-@RequestMapping("/shoppingCart")
+@RequestMapping("/user/shoppingCart")
 @Api(tags = "购物车")
 public class ShoppingCartController {
 
@@ -84,4 +84,5 @@ public class ShoppingCartController {
         }
         return R.success("该商品不在购物车").setCode("002");
     }
+
 }

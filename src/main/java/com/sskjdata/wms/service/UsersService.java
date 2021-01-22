@@ -9,7 +9,9 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,6 +27,7 @@ public class UsersService {
     private UsersMapper usersMapper;
 
     /*新增*/
+    @Transactional
     public void addUser(UsersAddIn param){
         log.info("新增用户");
         UsersEntity users = new UsersEntity();
@@ -33,13 +36,13 @@ public class UsersService {
     }
 
     /*登录*/
-    public Boolean login(LoginReq req){
+    public List<Map<String, Object>> login(LoginReq req){
 
-        int login = usersMapper.login(req);
-        if (login>0){
-            return true;
+        List<Map<String, Object>> login = usersMapper.login(req);
+        if (login.size()>0){
+            return login;
         }
-        return false;
+        return null;
     }
 
     /*根据用户名称查询用户*/
